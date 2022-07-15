@@ -6,7 +6,7 @@ import time
 
 # Setup epaper detail..
 #epaper_resolution = 212,104
-epaper_resolution = 250,212
+epaper_resolution = 250,122
 img = Image.new(mode = 'P',
                 size=(epaper_resolution[0], epaper_resolution[1]))
 #img.show()
