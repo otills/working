@@ -2,14 +2,14 @@ from PIL import Image, ImageDraw, ImageFont
 #import qrcode as QR
 import qrcode
 from font_fredoka_one import FredokaOne
+import time
 
 # Setup epaper detail..
 #epaper_resolution = 212,104
 epaper_resolution = 250,212
-img = Image.new(mode = 'RGB',
-                size=(epaper_resolution[0], epaper_resolution[1]),
-                color = 'white')
-img.show()
+img = Image.new(mode = 'P',
+                size=(epaper_resolution[0], epaper_resolution[1]))
+#img.show()
 
 # Create QR code
 qr = qrcode.QRCode(
@@ -23,28 +23,40 @@ wifi_qr.save('wifi_test.png')
 wifi_qr.height
 
 img.paste(wifi_qr,(0,0))
-img.show()
-
-qr = qrcode.QRCode(
-    version=1,
-    box_size=2
-)
+#img.show()
 
 # WIFI ..
-fnt = ImageFont.truetype("/Library/Fonts/Arial Unicode.ttf",15)
+#fnt = ImageFont.truetype("/Library/Fonts/Arial Unicode.ttf",15)
 fnt = ImageFont.truetype(FredokaOne,15)
 # Create a transparent image for text.
-txt = Image.new("RGB", img.size,(255,255,255))
+#txt = Image.new("RGB", img.size,(255,255,255))
 #
-d = ImageDraw.Draw(img)
-d.text((10,50), "WiFi", font=fnt, fill=(0,0,0))
+#txt = Image.new("RGBA",(epaper_resolution[0],epaper_resolution[1]), (255,255,255,0))
+#d = ImageDraw.Draw(img)
+#d.text((80,80), "WiFi", font=fnt, fill = (255,255,255))
+#img = Image.alpha_composite(txt,img)
+
 # Combine..
-img.show()
+#img.show()
+#img.save('epapr.png')
+#epapr = Image.open('epapr.png')
+#epapr.resize((250,122))
 
-from inky import InkyPHAT
-inky_display = InkyPHAT("black")
-inky_display.set_border
+from inky import InkyPHAT_SSD1608
+inky_display = InkyPHAT_SSD1608("black")
+#inky_display.set_border
 
+fnt = ImageFont.truetype(FredokaOne,220)
+d = ImageDraw.Draw(img)
+d.text((60,60), "WiFi", colour = 'black', font=fnt)
+time.sleep(1)
+img.save('epapr.png')
+epapr = Image.open('epapr.png')
+#epapr.resize(250,122)
+
+
+inky_display.set_image(epapr)
+inky_display.show()
  
 
 
